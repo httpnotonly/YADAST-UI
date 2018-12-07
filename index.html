@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>YADAST</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+      .row{
+        padding-top: 10px;
+      }
+    </style>
+    <script type="text/javascript" src="https:////cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript">
+
+      var socket = io.connect("ws://localhost:5000");
+
+      var target = "";
+      var targets = []
+      var need_crawl = false;
+
+      function collect(){
+        target = document.getElementsByName("target")[0].value;
+        targets = document.getElementsByName("targets")[0].value;
+        need_crawl = document.getElementsByName("need_crawl")[0].checked;
+        wcd = document.getElementsByName("wcd")[0].checked;
+        reverse_tabnabbing = document.getElementsByName("reverse_tabnabbing")[0].checked;
+        crlf = document.getElementsByName("crlf")[0].checked;
+      }
+
+      function send_task(socket){
+        socket.emit("task", {
+          data: {
+            "target": target,
+            "targets": targets,
+            "need_crawl": need_crawl,
+            "wcd": wcd,
+            "reverse_tabnabbing": reverse_tabnabbing,
+            "crlf": crlf,
+          }
+        });
+      }
+
+      function write_log(){
+        document.getElementsByName("log")[0].value += "\n Task added";
+      }
+
+      function submit(){
+        collect();
+        send_task(socket);
+        write_log();
+      }
+
+      socket.on("task", function (data) {
+        document.getElementsByName("log")[0].value = document.getElementsByName("log")[0].value + "\n" + data;
+      });
+
+    </script>
+  </head>
+  <body>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <h2>One target</h2>
+      <input type=text class="md-textarea form-control" name="target">
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <h2>Mass targets</h2>
+      <textarea name="targets" class="md-textarea form-control" rows="5"></textarea>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="need_crawl" checked="true">
+          </div>
+        </div>
+        <label class="form-control" for="need_crawl">Need to crawl</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="wcd">
+          </div>
+        </div>
+        <label class="form-control" for="wcd">Web Cache Deception</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="reverse_tabnabbing">
+          </div>
+        </div>
+        <label class="form-control" for="reverse_tabnabbing">Reverse Tabnabbing</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="crlf">
+          </div>
+        </div>
+        <label class="form-control" for="crlf">CRLF</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <center>
+        <button class="btn btn-success form-control" type="button" onclick="submit()">OK</button>
+      </center>
+    <div class="col-md-4"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <textarea name="log" class="md-textarea form-control" rows="12"></textarea>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+  </body>
+</html>
