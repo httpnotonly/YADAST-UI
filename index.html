@@ -22,6 +22,7 @@
         target = document.getElementsByName("target")[0].value;
         targets = document.getElementsByName("targets")[0].value;
         need_crawl = document.getElementsByName("need_crawl")[0].checked;
+        same_domain = document.getElementsByName("same_domain")[0].checked;
         wcd = document.getElementsByName("wcd")[0].checked;
         reverse_tabnabbing = document.getElementsByName("reverse_tabnabbing")[0].checked;
         crlf = document.getElementsByName("crlf")[0].checked;
@@ -33,6 +34,7 @@
             "target": target,
             "targets": targets,
             "need_crawl": need_crawl,
+            "same_domain": same_domain,
             "wcd": wcd,
             "reverse_tabnabbing": reverse_tabnabbing,
             "crlf": crlf,
@@ -83,6 +85,19 @@
           </div>
         </div>
         <label class="form-control" for="need_crawl">Need to crawl</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" name="same_domain" checked="true">
+          </div>
+        </div>
+        <label class="form-control" for="same_domain">Same domain for crawl?</label>
       </div>
     </div>
   </div>
